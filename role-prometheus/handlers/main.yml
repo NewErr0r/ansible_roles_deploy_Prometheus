@@ -1,0 +1,6 @@
+---
+- name: Started and Enabled prometheus
+  service:
+    name: prometheus
+    enabled: true 
+    state: started

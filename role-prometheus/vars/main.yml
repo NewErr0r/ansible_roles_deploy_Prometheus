@@ -1,0 +1,10 @@
+---
+var_lib_prometheus: "/var/lib/prometheus"
+usr_local_bin: "/usr/local/bin/"
+etc_prometheus: "/etc/prometheus/"
+
+prometheus: "/tmp/prometheus-2.14.0.linux-amd64/prometheus"
+promtool: "/tmp/prometheus-2.14.0.linux-amd64/promtool"
+
+consoles: "/tmp/prometheus-2.14.0.linux-amd64/consoles"
+console_libraries: "/tmp/prometheus-2.14.0.linux-amd64/console_libraries"

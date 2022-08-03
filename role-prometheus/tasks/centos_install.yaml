@@ -1,0 +1,77 @@
+---
+- name: Add a system group for Prometheus
+  group:
+    name: prometheus
+    state: present
+
+- name: Add a system user and a group for Prometheus
+  user:
+    name: prometheus
+    shell: /bin/false
+    groups: prometheus
+    append: yes
+
+- name: Create directory to be used for storing Prometheus data
+  file: 
+    path: "{{ etc_prometheus }}"
+    state: directory
+
+- name: Create directory to be used for storing Prometheus data
+  file: 
+    path: "{{ var_lib_prometheus }}"
+    state: directory
+
+- name: Install Prometheus
+  get_url:
+    url: "{{ url_prometheus }}"
+    dest: /tmp
+
+- name: Unarchive a file that is already on the remote machine
+  unarchive:
+    src: /tmp/prometheus-2.14.0.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Copy files "prometheus and promtool"
+  copy:
+    src: "{{ prometheus }}"
+    dest: "{{ usr_local_bin }}"
+    remote_src: yes
+
+- name: Copy files "prometheus and promtool"
+  copy:
+    src: "{{ promtool }}"
+    dest: "{{ usr_local_bin }}"
+    remote_src: yes
+
+- name: Copy files "prometheus and promtool"
+  copy:
+    src: "{{ consoles }}"
+    dest: "{{ etc_prometheus }}"
+    remote_src: yes
+
+- name: Copy files "prometheus and promtool"
+  copy:
+    src: "{{ console_libraries }}"
+    dest: "{{ etc_prometheus }}"
+    remote_src: yes
+
+- name: Configure Prometheus
+  copy:
+    src: prometheus.yml
+    dest: "{{ etc_prometheus }}/prometheus.yml"
+
+- name: Configure Prometheus
+  copy:
+    src: prometheus.service
+    dest: /etc/systemd/system/prometheus.service
+
+- name: Restart daemon-reload
+  systemd: 
+    daemon_reload: yes
+
+- name: Started and Enabled prometheus
+  service:
+    name: prometheus
+    enabled: true 
+    state: started
