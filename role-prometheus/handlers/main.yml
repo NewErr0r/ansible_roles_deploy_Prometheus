@@ -1,6 +1,11 @@
 ---
-- name: Started and Enabled prometheus
+- name: Restarted Firewalld
+  service:
+    name: firewalld
+    state: restarted
+
+- name: Restarted Prometheus
   service:
     name: prometheus
-    enabled: true 
-    state: started
+    state: restarted
+    

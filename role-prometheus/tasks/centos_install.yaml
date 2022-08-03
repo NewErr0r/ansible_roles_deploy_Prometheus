@@ -75,3 +75,33 @@
     name: prometheus
     enabled: true 
     state: started
+
+- name: Configure Firewalld
+  firewalld:
+    port: 9090/tcp
+    permanent: yes
+    state: enabled
+  notify: 
+    - Restarted Firewalld
+
+- name: Set ownership of configuration files and directories
+  file: 
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+    owner: prometheus
+    group: prometheus
+  loop:
+    - '/etc/prometheus'
+    - '/var/lib/prometheus'
+
+- name: Set ownership of configuration files and directories
+  file: 
+    path: "{{ item }}"
+    owner: prometheus
+    group: prometheus
+  loop:      
+    - '/usr/local/bin/prometheus'
+    - '/usr/local/bin/promtool'
+  notify: 
+    - Restarted Prometheus
